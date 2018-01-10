@@ -1,4 +1,5 @@
 var postModel = require('../models/postModel');
+var userModel = require('../models/userModel');
 
 /**
  * postController.js
@@ -11,7 +12,7 @@ module.exports = {
      * postController.list()
      */
     list: function (req, res) {
-        postModel.find(function (err, posts) {
+        postModel.find().populate('author').exec(function (err, posts) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting post.',
@@ -27,7 +28,7 @@ module.exports = {
      */
     show: function (req, res) {
         var id = req.params.id;
-        postModel.findOne({_id: id}, function (err, post) {
+        postModel.findOne({_id: id}).populate('author').exec(function (err, post) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting post.',
@@ -86,7 +87,8 @@ module.exports = {
 
             post.title = req.body.title ? req.body.title : post.title;
 			post.body = req.body.body ? req.body.body : post.body;
-			post.tags = req.body.tags ? req.body.tags : post.tags;
+            post.tags = req.body.tags ? req.body.tags : post.tags;
+            post.comments = req.body.comments ? req.body.comments : post.comments;
             post.author = req.body.author ? req.body.author : post.author;
             post.edited = Date.now();
 			
@@ -101,6 +103,57 @@ module.exports = {
                 return res.json(post);
             });
         });
+    },
+
+    /**
+     * postController.addComment()
+     */
+    addComment: function (req, res) {
+        var id = req.params.id;
+        if(req.session.email != null) {
+            userModel.findOne({email: req.session.email}, function(err, user) {
+                if(err) return res.status(403).json({err: "Corrupt session or database not available"});
+                postModel.findOne({_id: id}, function (err, post) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when getting post',
+                            error: err
+                        });
+                    }
+                    if (!post) {
+                        return res.status(404).json({
+                            message: 'No such post'
+                        });
+                    }
+
+                    if(req.body.comment) {
+                            post.comments.add({
+                                _id: user._id,
+                                email: user.email,
+                                name: user.name,
+                                comment: req.body.comment
+                            });
+                    }
+                    
+                    post.save(function (err, post) {
+                        if (err) {
+                            return res.status(500).json({
+                                message: 'Error when updating post.',
+                                error: err
+                            });
+                        }
+
+                        return res.json(post);
+                    });
+                });
+            });
+        }
+        else {
+            return res.status(400).json({
+                message: 'Error when updating post.',
+                error: 'Not logged in or corrupted session'
+            });
+        }
     },
 
     /**

@@ -5,6 +5,7 @@ var postSchema = new Schema({
 	'title' : { type: String, required: true }, 
 	'body' : String,
 	'tags' : Array,
+	'comments' : Array,
 	'created' : { type: Date, default: Date.now },
 	'edited' : { type: Date, default: Date.now },
 	'author' : {

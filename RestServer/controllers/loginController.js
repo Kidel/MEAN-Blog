@@ -1,4 +1,4 @@
-var User = require('../models/UserModel');
+var userModel = require('../models/UserModel');
 
 /**
  * loginController.js
@@ -12,8 +12,8 @@ module.exports = {
      */
     isLogged: function (req, res) {
         if(req.session.email != null)
-            return res.json({logged: true, email: req.session.email, err: null});
-        else return res.json({logged: false,  err: null});
+            return res.json({message: {logged: true, email: req.session.email}, err: null});
+        else return res.json({message: {logged: false, email: null},  err: null});
     },
 
     /**
@@ -22,22 +22,22 @@ module.exports = {
     login: function (req, res) {
         if(req.session.email != null) {
             // already logged in
-            res.json({logged: true, email: req.session.email, err: "already logged"});
+            res.json({message: {logged: true, email: req.session.email}, err: "Already logged"});
         }
         var email = req.body.email;
         var password = req.body.password;
         if(email != null && password != null) {
-            User.findOne({email: email}, function(err, response){
-                if(err) return res.json({logged: false, email: null, err: "invalid email"});
+            userModel.findOne({email: email}, function(err, response){
+                if(err) return res.status(403).json({message: {logged: false, email: null}, err: "Invalid email"});
                 if(sha256(response.salt+password) == response.password) {
                     req.session.email = response.email;
                     req.session.name = response.name;
-                    return res.json({logged: true, email: email, err: null});
+                    return res.json({message: {logged: true, email: email}, err: null});
                 }
-                else return res.json({logged: false, email: null, err: "invalid password"});
+                else return res.status(401).json({message: {logged: false, email: null}, err: "Invalid password"});
             });
         }
-        else return res.json({logged: false, email: null, err: "email or password empty"});
+        else return res.status(403).json({message: {logged: false, email: null}, err: "Email or password empty"});
     },
 
     /**
@@ -45,6 +45,6 @@ module.exports = {
      */
     logout: function (req, res) {
         req.session.email = null;
-        return res.json({logged: false, email: null, err: null}); 
+        return res.json({message: {logged: false, email: null}, err: null}); 
     }
 };
