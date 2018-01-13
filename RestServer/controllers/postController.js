@@ -1,5 +1,6 @@
-var postModel = require('../models/postModel');
-var userModel = require('../models/userModel');
+const postModel = require('../models/postModel');
+const userModel = require('../models/userModel');
+const config = require('../config');
 
 /**
  * postController.js
@@ -12,7 +13,13 @@ module.exports = {
      * postController.list()
      */
     list: function (req, res) {
-        postModel.find().populate('author').exec(function (err, posts) {
+        var page = (req.params.page) ?  req.params.page : 1;
+        var perPage = config.postsPerPage;
+        postModel.find().populate('author')
+        .limit(perPage)
+        .skip(perPage * (page - 1))
+        .sort('-created')
+        .exec(function (err, posts) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting post.',
@@ -48,22 +55,30 @@ module.exports = {
      * postController.create()
      */
     create: function (req, res) {
-        var post = new postModel({
-			title : req.body.title,
-			body : req.body.body,
-			tags : req.body.tags,
-			author : req.body.author
+        if(req.session.email == null) {
+            return res.status(403).json({
+                message: 'Error when creating post.',
+                error: 'Not logged in or corrupted session'
+            });
+        }
+        userModel.findOne({email: req.session.email}, function(err, user) {
+            if(err) return res.status(403).json({err: "Corrupt session or database not available"});
+            var post = new postModel({
+                title : req.body.title,
+                body : req.body.body,
+                tags : req.body.tags,
+                author : user
+            });
 
-        });
-
-        post.save(function (err, post) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating post',
-                    error: err
-                });
-            }
-            return res.status(201).json(post);
+            post.save(function (err, post) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Error when creating post',
+                        error: err
+                    });
+                }
+                return res.status(201).json(post);
+            });
         });
     },
 

@@ -1,6 +1,6 @@
-var userModel = require('../models/userModel');
-var util = require('../modules/utils');
-var sha256 = require('sha256');
+const userModel = require('../models/userModel');
+const util = require('../modules/utils');
+const sha256 = require('sha256');
 
 /**
  * userController.js
@@ -8,7 +8,7 @@ var sha256 = require('sha256');
  * @description :: Server-side logic for managing users.
  */
 module.exports = {
-
+    
     /**
      * userController.list()
      */

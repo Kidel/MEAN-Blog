@@ -1,4 +1,4 @@
-var userModel = require('../models/UserModel');
+const userModel = require('../models/UserModel');
 
 /**
  * loginController.js

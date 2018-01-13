@@ -11,7 +11,12 @@ router.get('/', postController.list);
 /*
  * GET
  */
-router.get('/:id', postController.show);
+router.get('/:page', postController.list);
+
+/*
+ * GET
+ */
+router.get('/id/:id', postController.show);
 
 /*
  * POST
