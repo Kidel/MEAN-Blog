@@ -16,8 +16,9 @@ var config = require("./config");
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
+var mongoUrl = process.env.MONGO_URL ? process.env.MONGO_URL : 'mongodb://localhost/';
 // TODO remember to specify username and password in your configuration
-mongoose.connect('mongodb://localhost/RestBlog', { useMongoClient: true }); 
+mongoose.connect(mongoUrl+'RestBlog', { useMongoClient: true }); 
 
 var app = express();
 
