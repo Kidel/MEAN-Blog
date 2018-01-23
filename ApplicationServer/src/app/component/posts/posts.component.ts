@@ -10,7 +10,9 @@ export class PostsComponent extends RestItemService implements OnInit {
 
   ngOnInit() {
     this.baseUrl = "posts/";
-    this.resetList();
+    this.route.paramMap.subscribe(params => {
+      this.resetList(params.get("page") || "");
+    });
   }
 
 }

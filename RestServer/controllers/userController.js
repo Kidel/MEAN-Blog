@@ -70,10 +70,11 @@ module.exports = {
      * userController.create()
      */
     create: function (req, res) {
+        var salt = util.getRandomArbitrary(1, 10000000000000000);
         var user = new userModel({
 			name : req.body.name,
             email : req.body.email,
-            salt : util.getRandomArbitrary(1, 10000000000000000),
+            salt : salt,
             password : sha256("" + salt + req.body.password),
 			authority : req.body.authority
 
@@ -110,7 +111,7 @@ module.exports = {
 
             user.name = req.body.name ? req.body.name : user.name;
             user.email = req.body.email ? req.body.email : user.email;
-            user.password = req.body.password ? sha256("" + salt + req.body.password) : user.password;
+            user.password = req.body.password ? sha256("" + user.salt + req.body.password) : user.password;
 			user.authority = req.body.authority ? req.body.authority : user.authority;
 			user.edited = Date.now();
 			

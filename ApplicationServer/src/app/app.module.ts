@@ -29,7 +29,7 @@ const appRoutes:Routes = [
     component: UsersComponent
   },
   {
-    path: 'users/:id', 
+    path: 'users/id/:id', 
     component: UserComponent
   },
   {
@@ -37,7 +37,11 @@ const appRoutes:Routes = [
     component: PostsComponent
   },
   {
-    path: 'posts/:id', 
+    path: 'posts/:page', 
+    component: PostsComponent
+  },
+  {
+    path: 'posts/id/:id', 
     component: PostComponent
   }
 ];

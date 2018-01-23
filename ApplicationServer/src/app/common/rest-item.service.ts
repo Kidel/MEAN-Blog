@@ -26,16 +26,20 @@ export class RestItemService {
       }
   }
 
-  resetList() {
-    return this.reset(() => { this.getItemList() });
+  resetList(page:string) {
+    return this.reset(() => { this.getItemList(page) });
   }
 
   resetItem(id:string) {
     return this.reset(() => { this.getItemFromId(id); });
   }
 
-  getItemList() {
-    this.httpCallService.get(this.globals.apiUrl + this.baseUrl, 
+  submit() {
+    this.postItem(this.dataItem);
+  }
+
+  getItemList(page:string) {
+    this.httpCallService.get(this.globals.apiUrl + this.baseUrl + page, 
       data => { this.dataList = data; },
       err => { this.dataList = {}; console.log(err); }
     ); 
@@ -52,7 +56,7 @@ export class RestItemService {
     this.getItemFrom("", id);
   }
 
-  postItem(formData:string) {
+  postItem(formData:any) {
     this.httpCallService.post(this.globals.apiUrl + this.baseUrl, formData,
       data => { this.dataItem = data; },
       err => { this.dataItem = {}; console.log(err); }

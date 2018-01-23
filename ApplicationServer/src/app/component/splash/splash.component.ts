@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-
-import { Globals } from '../../globals';
+import { RestItemService } from '../../common/rest-item.service';
 
 @Component({
   selector: 'app-splash',
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.css']
 })
-export class SplashComponent implements OnInit {
+export class SplashComponent extends RestItemService implements OnInit {
 
-  title:string = '';
-
-  constructor(private globals:Globals) { }
+  title:string = this.globals.title;
 
   ngOnInit() {
-    this.title = this.globals.title;
+    this.baseUrl = "posts/";
+    this.route.paramMap.subscribe(params => {
+      this.resetList("1");
+    });
   }
 
 }

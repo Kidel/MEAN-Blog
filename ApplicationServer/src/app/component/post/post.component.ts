@@ -9,8 +9,8 @@ import { RestItemService } from '../../common/rest-item.service';
 export class PostComponent extends RestItemService implements OnInit {
 
   ngOnInit() {
-    this.baseUrl = "posts/";
-    this.route.paramMap.subscribe( params => { 
+    this.baseUrl = "posts/id/";
+    this.route.paramMap.subscribe(params => { 
         this.resetItem(params.get("id"));
       });
   }

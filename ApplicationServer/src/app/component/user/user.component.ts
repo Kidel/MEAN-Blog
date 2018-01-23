@@ -9,7 +9,7 @@ import { RestItemService } from '../../common/rest-item.service';
 export class UserComponent extends RestItemService implements OnInit {
 
   ngOnInit() {
-    this.baseUrl = "users/";
+    this.baseUrl = "users/id/";
     this.route.paramMap.subscribe( params => { 
         this.resetItem(params.get("id"));
       });

@@ -1,3 +1,30 @@
 <p>
   users: {{ dataList | json }}
 </p>
+
+
+<div>
+  <form>
+    <div>
+      <label for="name">Name: </label>
+      <input type="text" [(ngModel)]="dataItem.name" name="name" required>
+    </div>
+    <div>
+      <label for="email">Email: </label>
+      <input type="email" [(ngModel)]="dataItem.email" name="email" required>
+    </div>
+    <div>
+      <label for="password">Password: </label>
+      <input type="password" [(ngModel)]="dataItem.password" name="password" required>
+    </div>
+    <div>
+      <label for="authority">Authority: </label>
+      <input type="text" [(ngModel)]="dataItem.authority" name="authority" required>
+    </div>
+    <div>
+      <button (click)="submit()">Submit</button>
+    </div>
+  </form>
+</div>
+
+{{ dataItem | json }}

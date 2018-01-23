@@ -12,8 +12,8 @@ router.get('/', userController.list);
 /*
  * GET
  */
-router.get('/:id', authController.canSeeUser);
-router.get('/:id', userController.show);
+router.get('/id/:id', authController.canSeeUser);
+router.get('/id/:id', userController.show);
 
 /*
  * GET
