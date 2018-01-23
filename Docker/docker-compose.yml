@@ -8,11 +8,15 @@ services:
     - database
     environment:
     - MONGO_URL=mongodb://database:27017/
+    ports:
+    - "3000:3000"
   application:
     build: ApplicationServer/.
-    ports:
-    - "8080:8080"
     links:
     - rest
+    environment:
+    - REST_URL=http://localhost:3000/
+    ports:
+    - "8080:8080"
   database:
     image: mongo

@@ -15,6 +15,9 @@ RUN npm install --unsafe-perm
 # Building Angular app
 RUN $(npm bin)/ng build --prod --build-optimizer
 
+# Env variables
+ENV PORT 8080
+
 EXPOSE 8080
 CMD [ "npm", "start" ]
 

@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">{{title}}</a>
+  <button class="navbar-toggler p-0 border-0" type="button" (click)="toggleOffcanvas()">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault" [class.open]="offcanvas">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" [class.active]="activeRoute=='/'">
+        <a class="nav-link" routerLink="/" (click)="toggleOffcanvas()">Home</a>
+      </li>
+      <li class="nav-item" [class.active]="activeRoute=='/posts'">
+        <a class="nav-link" routerLink="/posts" (click)="toggleOffcanvas()">Posts</a>
+      </li>
+      <li class="nav-item" [class.active]="activeRoute=='/users'">
+        <a class="nav-link" routerLink="/users" (click)="toggleOffcanvas()">Users</a>
+      </li>
+    </ul>
+  </div>
+</nav>

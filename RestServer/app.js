@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session)
@@ -16,7 +17,8 @@ var config = require("./config");
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
-var mongoUrl = process.env.MONGO_URL ? process.env.MONGO_URL : 'mongodb://localhost/';
+var mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/';
+console.log('Connecting to database at ' + mongoUrl);
 // TODO remember to specify username and password in your configuration
 mongoose.connect(mongoUrl+'RestBlog', { useMongoClient: true }); 
 
@@ -31,6 +33,21 @@ app.use(session({
     store: new MongoStore({mongooseConnection: mongoose.connection}),
     cookie: { secure: false } //TODO in production change it to true
 }));
+
+
+var originsWhitelist = [
+  'http://localhost:4200', //this is my front-end url for development
+  'http://localhost:8080', //this is my front-end url for development (from docker)
+  'http://www.myproductionurl.com'
+];
+var corsOptions = {
+  origin: function(origin, callback){
+        var isWhitelisted = originsWhitelist.indexOf(origin) !== -1;
+        callback(null, isWhitelisted);
+  },
+  credentials:true
+}
+app.use(cors(corsOptions));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

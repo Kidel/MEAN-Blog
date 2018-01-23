@@ -12,8 +12,9 @@ WORKDIR /projects/MEAN-Blog/RestServer
 # Install app dependencies
 RUN npm install --unsafe-perm
 
-# Setting up mongo url from env
+# Env variables
 ENV MONGO_URL mongodb://database:27017/
+ENV PORT 3000
 
 EXPOSE 3000
 CMD [ "npm", "start" ]
