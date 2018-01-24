@@ -9,6 +9,9 @@
 <!-- Date/Time -->
 <p>Posted on {{ dataItem.created | date:'full' }} <span *ngIf="dataItem.edited">Last edit on {{ dataItem.edited | date:'full' }}</span></p>
 
+<!-- Tags -->
+<p>Tags: <span *ngFor="let t of dataItem.tags"><a href="#" routerLink="/posts/tag/{{ t }}">{{ t }}</a>, </span></p>
+
 <hr>
 
 <!-- Post Content -->
