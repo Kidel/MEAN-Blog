@@ -13,7 +13,4 @@ export class UsersComponent extends RestItemService implements OnInit {
     this.resetList("");
   }
 
-  submitUser() {
-    this.submit();
-  }
 }

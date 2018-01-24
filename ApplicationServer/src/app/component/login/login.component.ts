@@ -28,14 +28,13 @@ export class LoginComponent extends RestItemService implements OnInit {
     this.globals.logged = false;
     this.showLogin = false;
     this.error = "";
-    this.globals.email = "";
+    this.globals.currentUser = {};
   }
 
   loginMessageHandler = data => { 
-    console.log(data);
     this.globals.logged = data.message.logged; 
     this.showLogin = !this.globals.logged;
-    this.globals.email = data.message.email; 
+    this.globals.currentUser = data.message.user; 
     this.error = this.globals.logged ? "" : data.err;
   }
 
@@ -43,7 +42,7 @@ export class LoginComponent extends RestItemService implements OnInit {
     console.log(err); 
     this.globals.logged = false; 
     this.showLogin = true;
-    this.globals.email = ""; 
+    this.globals.currentUser = {}; 
     this.error = err.error.err || err.statusText;
   }
 

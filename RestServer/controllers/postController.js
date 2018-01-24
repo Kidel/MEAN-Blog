@@ -55,18 +55,19 @@ module.exports = {
      * postController.create()
      */
     create: function (req, res) {
-        if(req.session.email == null) {
+        console.log("postController.create()");
+        if(req.session.user == null) {
             return res.status(403).json({
                 message: 'Error when creating post.',
                 error: 'Not logged in or corrupted session'
             });
         }
-        userModel.findOne({email: req.session.email}, function(err, user) {
+        userModel.findOne({email: req.session.user.email}, function(err, user) {
             if(err) return res.status(403).json({err: "Corrupt session or database not available"});
             var post = new postModel({
                 title : req.body.title,
                 body : req.body.body,
-                tags : req.body.tags,
+                tags : (req.body.tags.split(',').map(x => x.trim())),
                 author : user
             });
 
@@ -102,7 +103,7 @@ module.exports = {
 
             post.title = req.body.title ? req.body.title : post.title;
 			post.body = req.body.body ? req.body.body : post.body;
-            post.tags = req.body.tags ? req.body.tags : post.tags;
+            post.tags = req.body.tags ? (req.body.tags.split(',').map(x => x.trim())) : post.tags;
             post.comments = req.body.comments ? req.body.comments : post.comments;
             post.author = req.body.author ? req.body.author : post.author;
             post.edited = Date.now();
@@ -125,8 +126,8 @@ module.exports = {
      */
     addComment: function (req, res) {
         var id = req.params.id;
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, user) {
+        if(req.session.user != null) {
+            userModel.findOne({email: req.session.user.email}, function(err, user) {
                 if(err) return res.status(403).json({err: "Corrupt session or database not available"});
                 postModel.findOne({_id: id}, function (err, post) {
                     if (err) {

@@ -28,6 +28,6 @@ export class Globals {
 
     // cache
     logged:boolean = false;
-    email:string = "";
+    currentUser:any = {};
     auth:number = 0;
 }

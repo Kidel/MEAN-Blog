@@ -15,14 +15,14 @@ module.exports = {
      */
     canAddUser: function (req, res, next) {
         if(DEBUG && req.body.bypassAuth) return next();
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, response){
+        else if(req.session.user != null) {
+            userModel.findOne({email: req.session.user.email}, function(err, response){
                 if(!response || err) return res.status(403).json({err: "Corrupt session or database not available"});
                 if(response.auth < 255 ) return res.status(403).json({err: "Not sufficient permissions"});
                 return next();
             });
         }
-        return res.status(403).json({err: "Not logged in"});
+        else return res.status(403).json({err: "Not logged in"});
     },
 
     /**
@@ -31,14 +31,14 @@ module.exports = {
      */
     canAddComment: function (req, res, next) {
         if(DEBUG && req.body.bypassAuth) return next();
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, response){
+        else if(req.session.user != null) {
+            userModel.findOne({email: req.session.user.email}, function(err, response){
                 if(!response || err) return res.status(403).json({err: "Corrupt session or database error"});
                 if(response.auth <= 0 ) return res.status(403).json({err: "User banned"});
                 return next();
             });
         }
-        return res.status(403).json({err: "Not logged in"});
+        else return res.status(403).json({err: "Not logged in"});
     },
 
     /**
@@ -47,14 +47,14 @@ module.exports = {
      */
     canSeeUserList: function (req, res, next) {
         if(DEBUG && req.body.bypassAuth) return next();
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, response){
+        else if(req.session.user != null) {
+            userModel.findOne({email: req.session.user.email}, function(err, response){
                 if(!response || err) return res.status(403).json({err: "Corrupt session or database error"});
                 if(response.auth < 255 ) return res.status(403).json({err: "Not sufficient permissions"});
                 return next();
             });
         }
-        return res.status(403).json({err: "Not logged in"});
+        else return res.status(403).json({err: "Not logged in"});
     },
 
     /**
@@ -63,15 +63,15 @@ module.exports = {
      */
     canSeeUserByEmail: function (req, res, next) {
         if(DEBUG && req.body.bypassAuth) return next();
-        var email = req.params.email;
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, response){
+        else if(req.session.user != null) {
+            var email = req.params.email;
+            userModel.findOne({email: req.session.user.email}, function(err, response){
                 if(!response || err) return res.status(403).json({err: "Corrupt session or database error"});
                 if(response.auth < 255 && email != user.email) return res.status(403).json({err: "Not sufficient permissions"});
                 return next();
             });
         }
-        return res.status(403).json({err: "Not logged in"});
+        else return res.status(403).json({err: "Not logged in"});
     },
 
     /**
@@ -80,15 +80,15 @@ module.exports = {
      */
     canSeeUser: function (req, res, next) {
         if(DEBUG && req.body.bypassAuth) return next();
-        var id = req.params.id;
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, response){
+        else if(req.session.user != null) {
+            var email = req.params.email;
+            userModel.findOne({email: req.session.user.email}, function(err, response){
                 if(!response || err) return res.status(403).json({err: "Corrupt session or database error"});
                 if(response.auth < 255 && id != user._id) return res.status(403).json({err: "Not sufficient permissions"});
                 return next();
             });
         }
-        return res.status(403).json({err: "Not logged in"});
+        else return res.status(403).json({err: "Not logged in"});
     },
 
     /**
@@ -96,15 +96,15 @@ module.exports = {
      */
     canEditUser: function (req, res, next) {
         if(DEBUG && req.body.bypassAuth) return next();
-        var id = req.params.id;
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, response){
+        else if(req.session.user != null) {
+            var id = req.params.id;
+            userModel.findOne({email: req.session.user.email}, function(err, response){
                 if(!response || err) return res.status(403).json({err: "Corrupt session or database error"});
                 if(response.auth < 255 && id != user._id) return res.status(403).json({err: "Not sufficient permissions"});
                 return next();
             });
         }
-        return res.status(403).json({err: "Not logged in"});
+        else return res.status(403).json({err: "Not logged in"});
     },
 
     /**
@@ -112,9 +112,9 @@ module.exports = {
      */
     canEditPost: function (req, res, next) {
         if(DEBUG && req.body.bypassAuth) return next();
-        var id = req.params.id;
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, user){
+        else if(req.session.user != null) {
+            var id = req.params.id;
+            userModel.findOne({email: req.session.user.email}, function(err, user){
                 if(!response || err) return res.status(403).json({err: "Corrupt session or database error"});
                 postModel.findOne({_id: id}).populate('author').exec(function(err, post){
                     if(!response || err) return res.status(503).json({err: "Database error"});
@@ -124,22 +124,25 @@ module.exports = {
                 });
             });
         }
-        return res.status(403).json({err: "Not logged in"});
+        else return res.status(403).json({err: "Not logged in"});
     },
 
     /**
      * authController.canAddPost()
      */
     canAddPost: function (req, res, next) {
+        console.log("authController.canAddPost()");
         if(DEBUG && req.body.bypassAuth) return next();
-        if(req.session.email != null) {
-            userModel.findOne({email: req.session.email}, function(err, response){
+        else if(req.session.user != null) {
+            userModel.findOne({email: req.session.user.email}, function(err, response){
+                console.log("found User");
                 if(!response || err) return res.status(403).json({err: "Corrupt session or database not available"});
                 if(response.auth <= 0 ) return res.status(403).json({err: "User banned"});
+                console.log("Returning next");
                 return next();
             });
         }
-        return res.status(403).json({err: "Not logged in"});
+        else return res.status(403).json({err: "Not logged in"});
     }
 
 };

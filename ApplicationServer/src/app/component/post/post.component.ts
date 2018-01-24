@@ -15,4 +15,6 @@ export class PostComponent extends RestItemService implements OnInit {
       });
   }
 
+  // TODO submit to add comment
+
 }

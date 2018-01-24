@@ -5,9 +5,9 @@ var postSchema = new Schema({
 	'title' : { type: String, required: true }, 
 	'body' : String,
 	'tags' : { type: Array, index: true },
-	'comments' : Array,
+	'comments' : { type: Array, default: [] },
 	'created' : { type: Date, default: Date.now, index: true },
-	'edited' : { type: Date, default: Date.now },
+	'edited' : { type: Date, default: null },
 	'author' : {
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'user'

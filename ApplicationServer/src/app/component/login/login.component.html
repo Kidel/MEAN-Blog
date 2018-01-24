@@ -1,7 +1,7 @@
 <!-- Search Widget -->
 <form (submit)="login()" ngNativeValidate>
     <div class="card my-4">
-        <h5 class="card-header">Login</h5>
+        <h5 class="card-header">{{ globals.logged ? "Control Panel":"Login" }}</h5>
         <div class="card-body">
           <div *ngIf="!globals.logged;else welcomeMessage">
             <div class="form-group">
@@ -10,17 +10,22 @@
             <div class="form-group">
               <input type="password" name="password" placeholder="Password" class="form-control mr-sm-2" [(ngModel)]="dataSendItem.password" required>
             </div>
-            <input type="submit" value="Login" class="btn btn-primary">
+            <input type="submit" value="Login" class="btn btn-primary"> 
             <div [class.show-feedback]="error" class="invalid-feedback">{{ error }}</div>
+            <hr>
+            <div>You don't have an account yet? <a href="#" routerLink="/registration">Register</a></div>
           </div>
-
-          <ng-template #welcomeMessage>
-            <div class="navbar-text">
-              Welcome!
-              <a href="#" (click)="logout($event)" class="navbar-link">Logout</a>
-            </div>
-          </ng-template>
-
         </div>
     </div>
 </form>
+
+<ng-template #welcomeMessage>
+  <div class="card-body">
+    Welcome {{ globals.currentUser.name }}!
+    <hr>
+    <div>
+      <a href="#" (click)="logout($event)" class="btn btn-warning navbar-link">Logout</a>
+      <a href="#" routerLink="/users/id/{{ globals.currentUser._id }}" class="btn btn-secondary">Edit Profile</a>
+    </div>
+  </div>
+</ng-template>

@@ -2,30 +2,3 @@
   users: {{ dataList | json }}
 </p>
 
-{{ error }}
-
-<div>
-  <form>
-    <div>
-      <label for="name">Name: </label>
-      <input type="text" [(ngModel)]="dataSendItem.name" name="name" required>
-    </div>
-    <div>
-      <label for="email">Email: </label>
-      <input type="email" [(ngModel)]="dataSendItem.email" name="email" required>
-    </div>
-    <div>
-      <label for="password">Password: </label>
-      <input type="password" [(ngModel)]="dataSendItem.password" name="password" required>
-    </div>
-    <div>
-      <label for="authority">Authority: </label>
-      <input type="text" [(ngModel)]="dataSendItem.authority" name="authority" required>
-    </div>
-    <div>
-      <button (click)="submit()">Submit</button>
-    </div>
-  </form>
-</div>
-{{ dataSendItem | json }}
-{{ dataItem | json }}

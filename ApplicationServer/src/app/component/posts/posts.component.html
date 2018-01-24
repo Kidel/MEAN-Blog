@@ -1,4 +1,51 @@
-<p>
-  posts: {{ dataList | json }}
-</p>
-{{ error }}
+<div *ngIf="globals.logged">
+  <h4 class="mt-4">Submit a post</h4>
+  <hr>
+  <form (submit)="submit()" ngNativeValidate>
+      <div class="form-group">
+      <label for="title">Title: </label>
+      <input type="text" [(ngModel)]="dataSendItem.title" name="title" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="body">Contents: </label>
+      <textarea class="form-control" rows="3" [(ngModel)]="dataSendItem.body" name="body" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="tags">Tags: </label>
+      <input type="tags" [(ngModel)]="dataSendItem.tags" name="tags" placeholder="Comma separated tags" class="form-control">
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Login" class="btn btn-primary"> 
+    </div>
+    <div [class.show-feedback]="error" class="invalid-feedback">{{ error }}</div>
+  </form>
+  <hr>
+</div>
+
+
+<div *ngFor="let post of dataList">
+  <!-- Title -->
+  <h2 class="mt-4">{{ post.title }}</h2>
+
+  <!-- Author -->
+  <p class="lead">
+    by
+    <a href="#" routerLink="users/id/{{ post.author._id }}">{{ post.author.name }}</a>
+  </p>
+  <!-- Date/Time -->
+  <p>Posted on {{ post.created | date:'full' }} <span *ngIf="post.edited">Last edit on {{ post.edited | date:'full' }}</span></p>
+  
+  <hr>
+
+  <!-- Post Content -->
+  <p class="lead">{{ post.body }}</p>
+
+  <!-- Post Comments -->
+  <a href="#" routerLink="posts/id/{{ post._id }}">Comments: {{ post.comments.length }}</a>
+
+  <hr>
+</div>
+
+
+
+

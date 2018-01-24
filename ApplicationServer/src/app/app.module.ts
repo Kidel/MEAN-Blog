@@ -34,6 +34,10 @@ const appRoutes:Routes = [
     component: UserComponent
   },
   {
+    path: 'registration', 
+    component: UserComponent
+  },
+  {
     path: 'posts', 
     component: PostsComponent
   },
