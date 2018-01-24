@@ -18,9 +18,8 @@ import { SearchComponent } from './component/search/search.component';
 import { HttpCallsService } from './common/http-calls.service';
 import { RestItemService } from './common/rest-item.service';
 
-import { GravatarModule } from '@infinitycube/gravatar';
-
 import { Globals } from './globals';
+import { TagsComponent } from './component/tags/tags.component';
 
 const appRoutes:Routes = [
   {
@@ -44,12 +43,20 @@ const appRoutes:Routes = [
     component: PostsComponent
   },
   {
-    path: 'posts/:page', 
-    component: PostsComponent
-  },
-  {
     path: 'posts/id/:id', 
     component: PostComponent
+  },
+  {
+    path: 'posts/tag/:tag', // TODO
+    component: SearchComponent
+  },
+  {
+    path: 'posts/search/',  // TODO
+    component: SearchComponent
+  },
+  {
+    path: 'posts/:page', 
+    component: PostsComponent
   },
   {
     path: 'about', 
@@ -68,14 +75,14 @@ const appRoutes:Routes = [
     UserComponent,
     LoginComponent,
     AboutComponent,
-    SearchComponent
+    SearchComponent,
+    TagsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule, 
-    RouterModule.forRoot(appRoutes),
-    GravatarModule
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [
     Globals, 

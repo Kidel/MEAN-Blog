@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Md5 } from 'ts-md5/dist/md5';
 
 import { HttpCallsService } from './http-calls.service';
 import { Globals } from '../globals';
@@ -13,7 +14,7 @@ export class RestItemService {
   dataSendItem:any = {};
   error:string = "";
 
-  constructor(protected httpCallService:HttpCallsService, protected globals:Globals, protected route:ActivatedRoute) { }
+  constructor(public httpCallService:HttpCallsService, public globals:Globals, public route:ActivatedRoute, public md5:Md5) { }
 
   reset(callback) {
     if(this.globals.apiUrl === "") { // API url still not ready, subscribing

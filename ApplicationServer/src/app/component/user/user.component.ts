@@ -16,7 +16,7 @@ export class UserComponent extends RestItemService implements OnInit {
     });
   }
 
-  // TODO registration
+  // TODO registration if not logged in and if no param id
 
 }
 

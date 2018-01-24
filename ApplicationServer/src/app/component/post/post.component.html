@@ -33,7 +33,7 @@
 <div *ngFor="let c of dataItem.comments">
   <!-- Comment -->
   <div class="media mb-4">
-    <img gravatar [email]="c.email" [size]="80" [fallback]="'retro'" class="d-flex mr-3 rounded-circle">
+      <a href="#" routerLink="/users/id/{{ c._id }}"><img src="//www.gravatar.com/avatar/{{ md5(c.email) }}?s=80&amp;d=retro" class="d-flex mr-3 rounded-circle"></a>
     <div class="media-body">
        <h5 class="mt-0"><a href="#" routerLink="/users/id/{{ c._id }}">{{ c.name }}</a></h5>
       {{ c.comment }}
@@ -41,3 +41,4 @@
   </div>
 </div>
 
+<!-- TODO edits -->

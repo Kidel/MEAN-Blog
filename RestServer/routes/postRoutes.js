@@ -11,12 +11,22 @@ router.get('/', postController.list);
 /*
  * GET
  */
-router.get('/:page', postController.list);
+router.get('/id/:id', postController.show);
 
 /*
  * GET
  */
-router.get('/id/:id', postController.show);
+router.get('/tags', postController.tagList);
+
+/*
+ * GET
+ */
+router.get('/tag/:tag', postController.listByTag);
+
+/*
+ * GET
+ */
+router.get('/:page', postController.list);
 
 /*
  * POST

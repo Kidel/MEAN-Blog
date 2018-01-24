@@ -1,0 +1,13 @@
+<!-- Categories Widget -->
+<div class="card my-4">
+  <h5 class="card-header">Tags</h5>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-6">
+          <span *ngFor="let d of dataItem[0]?.data">
+            <a href="/posts/tag/{{ d.tag }}">{{ d.tag | titlecase }}</a> 
+          </span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,14 +2,15 @@
 <!-- Page Content -->
 <div class="container margin-bottom">
     <div class="row">
-        <!-- Post Content Column -->
-        <div class="col-lg-8">
-            <router-outlet></router-outlet>
-        </div>
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
             <app-login></app-login>
             <app-search></app-search>
+            <app-tags></app-tags>
+        </div>
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
+            <router-outlet></router-outlet>
         </div>
     </div>
 </div>

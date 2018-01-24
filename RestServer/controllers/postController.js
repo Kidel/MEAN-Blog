@@ -22,7 +22,7 @@ module.exports = {
         .exec(function (err, posts) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting post.',
+                    message: 'Error when getting posts.',
                     error: err
                 });
             }
@@ -48,6 +48,28 @@ module.exports = {
                 });
             }
             return res.json(post);
+        });
+    },
+
+    /**
+     * postController.listByTag()
+     */
+    listByTag: function (req, res) {
+        var page = (req.params.page) ?  req.params.page : 1;
+        var perPage = config.postsPerPage;
+        var tag = req.params.tag;
+        postModel.find({tags: tag}).populate('author')
+        .limit(perPage)
+        .skip(perPage * (page - 1))
+        .sort('-created')
+        .exec(function (err, posts) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting posts.',
+                    error: err
+                });
+            }
+            return res.json(posts);
         });
     },
 
@@ -190,5 +212,25 @@ module.exports = {
             }
             return res.status(204).json();
         });
-    }
+    },
+
+    /**
+     * postController.tagList()
+     */
+    tagList: function (req, res) {
+        postModel.aggregate([
+            {$unwind: '$tags'}, 
+            {$group:{_id: '$tags', count:{$sum:1}}},
+            {$project:{tmp:{tag:'$_id', count:'$count'}}}, 
+            {$group:{_id:null, total:{$sum:1}, data:{$addToSet:'$tmp'}}}
+         ], function (err, results) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when aggregating tags.',
+                    error: err
+                });
+            }
+            return res.json(results);
+        });
+    },
 };
