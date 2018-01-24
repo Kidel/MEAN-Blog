@@ -33,9 +33,9 @@
 <div *ngFor="let c of dataItem.comments">
   <!-- Comment -->
   <div class="media mb-4">
-      <a href="#" routerLink="/users/id/{{ c._id }}"><img src="//www.gravatar.com/avatar/{{ md5(c.email) }}?s=80&amp;d=retro" class="d-flex mr-3 rounded-circle"></a>
+      <a href="#" routerLink="/users/id/{{ c?._id }}"><img src="//www.gravatar.com/avatar/{{ hash(c?.email) }}?s=80&amp;d=retro" class="d-flex mr-3 rounded-circle"></a>
     <div class="media-body">
-       <h5 class="mt-0"><a href="#" routerLink="/users/id/{{ c._id }}">{{ c.name }}</a></h5>
+       <h5 class="mt-0"><a href="#" routerLink="/users/id/{{ c?._id }}">{{ c?.name }}</a></h5>
       {{ c.comment }}
     </div>
   </div>

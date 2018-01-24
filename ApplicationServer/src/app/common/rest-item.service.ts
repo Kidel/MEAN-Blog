@@ -14,7 +14,7 @@ export class RestItemService {
   dataSendItem:any = {};
   error:string = "";
 
-  constructor(public httpCallService:HttpCallsService, public globals:Globals, public route:ActivatedRoute, public md5:Md5) { }
+  constructor(public httpCallService:HttpCallsService, public globals:Globals, public route:ActivatedRoute) { }
 
   reset(callback) {
     if(this.globals.apiUrl === "") { // API url still not ready, subscribing
@@ -80,4 +80,9 @@ export class RestItemService {
     ); 
   }
 
+  hash(str:string) {
+    let md5 = new Md5();
+    md5.appendStr(str);
+    return md5.end().toString();
+  }
 }
