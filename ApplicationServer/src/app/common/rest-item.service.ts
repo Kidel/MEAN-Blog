@@ -10,6 +10,8 @@ export class RestItemService {
   baseUrl:string = "";
   dataList:any = [];
   dataItem:any = {};
+  dataSendItem:any = {};
+  error:string = "";
 
   constructor(protected httpCallService:HttpCallsService, protected globals:Globals, protected route:ActivatedRoute) { }
 
@@ -35,20 +37,20 @@ export class RestItemService {
   }
 
   submit() {
-    this.postItem(this.dataItem);
+    this.postItem(this.dataSendItem);
   }
 
   getItemList(page:string) {
     this.httpCallService.get(this.globals.apiUrl + this.baseUrl + page, 
-      data => { this.dataList = data; },
-      err => { this.dataList = {}; console.log(err); }
+      data => { this.dataList = data; this.error = "" },
+      err => { this.dataList = []; this.error = err.error.err; }
     ); 
   }
 
   getItemFrom(subpath:string, what:string) {
     this.httpCallService.get(this.globals.apiUrl + this.baseUrl + subpath + what, 
-      data => { this.dataItem = data; },
-      err => { this.dataItem = {}; console.log(err); }
+      data => { this.dataItem = data; this.error = "" },
+      err => { this.dataItem = {}; this.error = err.error.err; }
     ); 
   }
 
@@ -58,22 +60,22 @@ export class RestItemService {
 
   postItem(formData:any) {
     this.httpCallService.post(this.globals.apiUrl + this.baseUrl, formData,
-      data => { this.dataItem = data; },
-      err => { this.dataItem = {}; console.log(err); }
+      data => { this.dataItem = data; this.error = ""; this.dataList.unshift(this.dataItem); },
+      err => { this.dataItem = {}; this.error = err.error.err; }
     ); 
   }
 
   editItem(id:string, formData:string) {
     this.httpCallService.put(this.globals.apiUrl + this.baseUrl + id, formData,
-      data => { this.dataItem = data; },
-      err => { this.dataItem = {}; console.log(err); }
+      data => { this.dataItem = data; this.error = "" },
+      err => { this.dataItem = {}; this.error = err.error.err; }
     ); 
   }
 
   deleteItem(id:string) {
     this.httpCallService.delete(this.globals.apiUrl + this.baseUrl + id, 
-      data => { this.dataItem = data; },
-      err => { this.dataItem = {}; console.log(err); }
+      data => { this.dataItem = data; this.error = "" },
+      err => { this.dataItem = {}; this.error = err.error.err; }
     ); 
   }
 

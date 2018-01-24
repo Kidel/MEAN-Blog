@@ -10,7 +10,7 @@ export class HttpCallsService {
 
   get(url:string, callback, callbackErr) {
     console.log("GET request to: " + url);
-    this.http.get(url).retry(3).subscribe(
+    this.http.get(url, { withCredentials: true }).retry(3).subscribe(
       callback,
       callbackErr
     );
@@ -18,7 +18,7 @@ export class HttpCallsService {
 
   post(url:string, data, callback, callbackErr) {
     console.log("POST request to: " + url);
-    this.http.post(url, data).retry(3).subscribe(
+    this.http.post(url, data, { withCredentials: true }).retry(3).subscribe(
       callback,
       callbackErr
     );
@@ -26,7 +26,7 @@ export class HttpCallsService {
 
   put(url:string, data, callback, callbackErr) {
     console.log("PUT request to: " + url);
-    this.http.put(url, data).retry(3).subscribe(
+    this.http.put(url, data, { withCredentials: true }).retry(3).subscribe(
       callback,
       callbackErr
     );
@@ -34,7 +34,7 @@ export class HttpCallsService {
 
   delete(url:string, callback, callbackErr) {
     console.log("DELETE request to: " + url);
-    this.http.delete(url).retry(3).subscribe(
+    this.http.delete(url, { withCredentials: true }).retry(3).subscribe(
       callback,
       callbackErr
     );

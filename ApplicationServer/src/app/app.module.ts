@@ -11,8 +11,9 @@ import { PostsComponent } from './component/posts/posts.component';
 import { UsersComponent } from './component/users/users.component';
 import { PostComponent } from './component/post/post.component';
 import { UserComponent } from './component/user/user.component';
-import { SplashComponent } from './component/splash/splash.component';
 import { LoginComponent } from './component/login/login.component';
+import { AboutComponent } from './template/about/about.component';
+import { SearchComponent } from './component/search/search.component';
 
 import { HttpCallsService } from './common/http-calls.service';
 import { RestItemService } from './common/rest-item.service';
@@ -22,7 +23,7 @@ import { Globals } from './globals';
 const appRoutes:Routes = [
   {
     path: '', 
-    component: SplashComponent
+    component: PostsComponent
   },
   {
     path: 'users', 
@@ -43,6 +44,10 @@ const appRoutes:Routes = [
   {
     path: 'posts/id/:id', 
     component: PostComponent
+  },
+  {
+    path: 'about', 
+    component: AboutComponent
   }
 ];
 
@@ -55,8 +60,9 @@ const appRoutes:Routes = [
     UsersComponent,
     PostComponent,
     UserComponent,
-    SplashComponent,
-    LoginComponent
+    LoginComponent,
+    AboutComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

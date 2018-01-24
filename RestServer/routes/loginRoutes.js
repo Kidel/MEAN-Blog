@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var userController = require('../controllers/loginController');
+var loginController = require('../controllers/loginController');
 
 /*
  * GET
@@ -10,11 +10,11 @@ router.get('/', loginController.isLogged);
 /*
  * POST
  */
-router.post('/', userController.login);
+router.post('/', loginController.login);
 
 /*
  * DELETE
  */
-router.delete('/', userController.logout);
+router.delete('/', loginController.logout);
 
 module.exports = router;

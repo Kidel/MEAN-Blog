@@ -1,4 +1,5 @@
-const userModel = require('../models/UserModel');
+const userModel = require('../models/userModel');
+const sha256 = require('sha256');
 
 /**
  * loginController.js
@@ -28,8 +29,8 @@ module.exports = {
         var password = req.body.password;
         if(email != null && password != null) {
             userModel.findOne({email: email}, function(err, response){
-                if(err) return res.status(403).json({message: {logged: false, email: null}, err: "Invalid email"});
-                if(sha256(response.salt+password) == response.password) {
+                if(err || !response) return res.status(403).json({message: {logged: false, email: null}, err: "Invalid email"});
+                if(sha256(response.salt + password) == response.password) {
                     req.session.email = response.email;
                     req.session.name = response.name;
                     return res.json({message: {logged: true, email: email}, err: null});

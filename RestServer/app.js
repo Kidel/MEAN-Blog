@@ -12,6 +12,7 @@ var MongoStore = require('connect-mongo')(session)
 var index = require('./routes/index');
 var users = require('./routes/userRoutes');
 var posts = require('./routes/postRoutes');
+var login = require('./routes/loginRoutes');
 
 var config = require("./config");
 
@@ -25,15 +26,23 @@ mongoose.connect(mongoUrl+'RestBlog', { useMongoClient: true });
 var app = express();
 
 app.set('trust proxy', 1); // trust first proxy
+
+app.use(cookieParser());
 app.use(session({
     secret: config.cookieSecret,
     resave: false,
-    saveUninitialized: true,
-    maxAge: new Date(Date.now() + 3600000),
-    store: new MongoStore({mongooseConnection: mongoose.connection}),
-    cookie: { secure: false } //TODO in production change it to true
+    saveUninitialized: false,
+    store: new MongoStore({
+      db: 'sessions', 
+      ttl: 60 * 60 * 24 * 365,
+      touchAfter: 60 * 60 * 24,
+      mongooseConnection: mongoose.connection
+    }),
+    cookie: { 
+      secure: false, // false or it needs HTTPS
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+     } 
 }));
-
 
 var originsWhitelist = [
   'http://localhost:4200', //this is my front-end url for development
@@ -58,12 +67,12 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/posts', posts);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
