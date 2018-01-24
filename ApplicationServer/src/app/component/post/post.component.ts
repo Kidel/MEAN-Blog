@@ -16,5 +16,11 @@ export class PostComponent extends RestItemService implements OnInit {
   }
 
   // TODO submit to add comment
+  submitComment() {
+    this.httpCallService.post(this.globals.apiUrl + "posts/" + this.dataItem._id, this.dataSendItem,
+      data => { this.dataItem = data; this.error = ""; this.dataList.unshift(this.dataItem); },
+      err => { this.dataItem = {}; this.error = err.error.err; }
+    ); 
+  }
 
 }

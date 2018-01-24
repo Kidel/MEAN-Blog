@@ -18,6 +18,8 @@ import { SearchComponent } from './component/search/search.component';
 import { HttpCallsService } from './common/http-calls.service';
 import { RestItemService } from './common/rest-item.service';
 
+import { GravatarModule } from '@infinitycube/gravatar';
+
 import { Globals } from './globals';
 
 const appRoutes:Routes = [
@@ -72,9 +74,14 @@ const appRoutes:Routes = [
     BrowserModule,
     FormsModule,
     HttpClientModule, 
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    GravatarModule
   ],
-  providers: [Globals, HttpCallsService, RestItemService],
+  providers: [
+    Globals, 
+    HttpCallsService, 
+    RestItemService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

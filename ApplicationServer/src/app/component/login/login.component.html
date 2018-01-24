@@ -21,11 +21,11 @@
 
 <ng-template #welcomeMessage>
   <div class="card-body">
-    Welcome {{ globals.currentUser.name }}!
+    Welcome <strong>{{ globals.currentUser.name }}</strong>!
     <hr>
     <div>
-      <a href="#" (click)="logout($event)" class="btn btn-warning navbar-link">Logout</a>
-      <a href="#" routerLink="/users/id/{{ globals.currentUser._id }}" class="btn btn-secondary">Edit Profile</a>
+      <a href="#" (click)="logout($event)" class="btn btn-secondary navbar-link">Logout</a>
+      <a href="#" routerLink="/users/id/{{ globals.currentUser._id }}" class="btn btn-primary">Edit Profile</a>
     </div>
   </div>
 </ng-template>

@@ -78,7 +78,9 @@ module.exports = {
                         error: err
                     });
                 }
-                return res.status(201).json(post);
+                post.populate('author', function(err) {
+                    return res.status(201).json(post);
+                });
             });
         });
     },
@@ -115,8 +117,9 @@ module.exports = {
                         error: err
                     });
                 }
-
-                return res.json(post);
+                post.populate('author', function(err) {
+                    return res.json(post);
+                });
             });
         });
     },
@@ -143,12 +146,12 @@ module.exports = {
                     }
 
                     if(req.body.comment) {
-                            post.comments.add({
-                                _id: user._id,
-                                email: user.email,
-                                name: user.name,
-                                comment: req.body.comment
-                            });
+                        post.comments.unshift({
+                            _id: user._id,
+                            email: user.email,
+                            name: user.name,
+                            comment: req.body.comment
+                        });
                     }
                     
                     post.save(function (err, post) {
@@ -158,8 +161,9 @@ module.exports = {
                                 error: err
                             });
                         }
-
-                        return res.json(post);
+                        post.populate('author', function(err) {
+                            return res.json(post);
+                        });
                     });
                 });
             });

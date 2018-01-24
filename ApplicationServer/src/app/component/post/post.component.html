@@ -4,7 +4,7 @@
 <!-- Author -->
 <p class="lead">
   by
-  <a href="#" routerLink="users/id/{{ dataItem.author._id }}">{{ dataItem.author.name }}</a>
+  <a href="#" routerLink="/users/id/{{ dataItem.author?._id }}">{{ dataItem.author?.name }}</a>
 </p>
 <!-- Date/Time -->
 <p>Posted on {{ dataItem.created | date:'full' }} <span *ngIf="dataItem.edited">Last edit on {{ dataItem.edited | date:'full' }}</span></p>
@@ -14,15 +14,18 @@
 <!-- Post Content -->
 <p class="lead">{{ dataItem.body }}</p>
 
+<hr>
+
 <!-- Comments Form -->
 <div class="card my-4" *ngIf="globals.logged">
   <h5 class="card-header">Leave a Comment:</h5>
   <div class="card-body">
-    <form (submit)="addComment()" ngNativeValidate>
+    <form (submit)="submitComment()" ngNativeValidate>
       <div class="form-group">
         <textarea class="form-control" rows="3" [(ngModel)]="dataSendItem.comment" name="comment" required></textarea>
       </div>
       <input type="submit" value="Submit" class="btn btn-primary">
+      <div [class.show-feedback]="error" class="invalid-feedback">{{ error }}</div>
     </form>
   </div>
 </div>
@@ -30,12 +33,11 @@
 <div *ngFor="let c of dataItem.comments">
   <!-- Comment -->
   <div class="media mb-4">
-    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+    <img gravatar [email]="c.email" [size]="80" [fallback]="'retro'" class="d-flex mr-3 rounded-circle">
     <div class="media-body">
-      <h5 class="mt-0"><a href="#" routerLink="users/id/{{ c._id }}">{{ c.name }}</a></h5>
+       <h5 class="mt-0"><a href="#" routerLink="/users/id/{{ c._id }}">{{ c.name }}</a></h5>
       {{ c.comment }}
     </div>
   </div>
 </div>
 
-<hr>

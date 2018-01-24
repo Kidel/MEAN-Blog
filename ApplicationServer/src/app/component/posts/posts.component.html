@@ -30,7 +30,7 @@
   <!-- Author -->
   <p class="lead">
     by
-    <a href="#" routerLink="users/id/{{ post.author._id }}">{{ post.author.name }}</a>
+    <a href="#" routerLink="/users/id/{{ post.author._id }}">{{ post.author.name }}</a>
   </p>
   <!-- Date/Time -->
   <p>Posted on {{ post.created | date:'full' }} <span *ngIf="post.edited">Last edit on {{ post.edited | date:'full' }}</span></p>
@@ -41,7 +41,7 @@
   <p class="lead">{{ post.body }}</p>
 
   <!-- Post Comments -->
-  <a href="#" routerLink="posts/id/{{ post._id }}">Comments: {{ post.comments.length }}</a>
+  <a href="#" routerLink="/posts/id/{{ post._id }}">Comments: {{ post.comments.length }}</a>
 
   <hr>
 </div>
