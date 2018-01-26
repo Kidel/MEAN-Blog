@@ -15,7 +15,6 @@ import { PostComponent } from './component/post/post.component';
 import { UserComponent } from './component/user/user.component';
 import { LoginComponent } from './component/login/login.component';
 import { AboutComponent } from './template/about/about.component';
-import { SearchComponent } from './component/search/search.component';
 import { TagsComponent } from './component/tags/tags.component';
 
 import { HttpCallsService } from './common/http-calls.service';
@@ -49,12 +48,8 @@ const appRoutes:Routes = [
     component: PostComponent
   },
   {
-    path: 'posts/tag/:tag', // TODO
-    component: SearchComponent
-  },
-  {
-    path: 'posts/search/',  // TODO
-    component: SearchComponent
+    path: 'posts/tag/:tag', // TODO server and client side
+    component: PostsComponent
   },
   {
     path: 'posts/:page', 
@@ -77,7 +72,6 @@ const appRoutes:Routes = [
     UserComponent,
     LoginComponent,
     AboutComponent,
-    SearchComponent,
     TagsComponent
   ],
   imports: [

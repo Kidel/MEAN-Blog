@@ -11,6 +11,7 @@ export class LoginComponent extends RestItemService implements OnInit {
   showLogin:boolean;
 
   ngOnInit() {
+    this.serviceName = "LoginComponent";
     this.init();
     if(this.globals.apiUrl === "") { // API url still not ready, subscribing
       this.globals.gotConfig.subscribe(
@@ -43,7 +44,7 @@ export class LoginComponent extends RestItemService implements OnInit {
     this.globals.logged = false; 
     this.showLogin = true;
     this.globals.currentUser = {}; 
-    this.error = err.error.err || err.statusText;
+    this.error = err.error.err || err.error.message || err.statusText;
   }
 
   checkLogin() {

@@ -1,4 +1,17 @@
-<p>
-  users: {{ dataList | json }}
-</p>
+<div *ngFor="let user of dataList">
+  <!-- Name -->
+  <h1 class="mt-4">{{ user.name }}</h1>
 
+  <!-- Mail -->
+  <p class="lead">
+    <a href="mailto: {{ user.email }}">{{ user.email }}</a>
+  </p>
+
+  <!-- Authority -->
+  <p>Authority: {{ user.authority }}</p>
+  
+  <!-- Date/Time -->
+  <p>Created on {{ user.created | date:'full' }} <span *ngIf="user.edited">Last edit on {{ user.edited | date:'full' }}</span></p>
+
+  <hr>
+</div>

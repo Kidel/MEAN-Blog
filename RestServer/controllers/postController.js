@@ -89,7 +89,7 @@ module.exports = {
             var post = new postModel({
                 title : req.body.title,
                 body : req.body.body,
-                tags : (req.body.tags.split(',').map(x => x.trim())),
+                tags : req.body.tags ? (req.body.tags.split(',').map(x => x.trim())):[],
                 author : user
             });
 

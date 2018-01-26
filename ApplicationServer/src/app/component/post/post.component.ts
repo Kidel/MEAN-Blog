@@ -9,13 +9,13 @@ import { RestItemService } from '../../common/rest-item.service';
 export class PostComponent extends RestItemService implements OnInit {
 
   ngOnInit() {
+    this.serviceName = "PostComponent";
     this.baseUrl = "posts/id/";
     this.route.paramMap.subscribe(params => { 
         this.resetItem(params.get("id"));
       });
   }
 
-  // TODO submit to add comment
   submitComment() {
     this.httpCallService.post(this.globals.apiUrl + "posts/" + this.dataItem._id, this.dataSendItem,
       data => { this.dataItem = data; this.error = ""; this.dataList.unshift(this.dataItem); },

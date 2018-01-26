@@ -21,6 +21,7 @@ export class Globals {
     }
 
     gotConfig:EventEmitter<boolean> = new EventEmitter<boolean>();
+    newSubmission:EventEmitter<string> = new EventEmitter<string>();
 
     title:string = "MEAN Blog";
     configUrl:string = "assets/config.json";

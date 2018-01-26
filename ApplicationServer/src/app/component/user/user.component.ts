@@ -8,15 +8,25 @@ import { RestItemService } from '../../common/rest-item.service';
 })
 export class UserComponent extends RestItemService implements OnInit {
 
+  userId:string = null;
+
   ngOnInit() {
+    this.serviceName = "UserComponent";
+    this.userId = null;
     this.baseUrl = "users/";
     this.route.paramMap.subscribe(params => { 
-      this.baseUrl = "users/id/";
-      this.resetItem(params.get("id"));
+      this.userId = params.get("id")
+      if(this.userId) {
+        this.baseUrl = "users/id/";
+        this.resetItem(this.userId);
+      }
     });
   }
 
-  // TODO registration if not logged in and if no param id
+  // registration if not logged in and if no param id
+  register() {
+    this.submit();
+  }
 
 }
 

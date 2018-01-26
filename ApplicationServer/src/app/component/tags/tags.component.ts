@@ -9,8 +9,13 @@ import { RestItemService } from '../../common/rest-item.service';
 export class TagsComponent extends RestItemService implements OnInit {
 
   ngOnInit() {
+    this.serviceName = "TagsComponent";
     this.baseUrl = "posts/tags/";
     this.resetItem(""); 
+    this.globals.newSubmission.subscribe(
+      (data:string) => { 
+        if(data == "PostsComponent") this.resetItem("");
+    })
   }
 
 }

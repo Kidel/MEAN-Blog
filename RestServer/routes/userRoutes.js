@@ -6,6 +6,11 @@ var authController = require('../controllers/authController');
 /*
  * GET
  */
+router.get('/startup', userController.startup);
+
+/*
+ * GET
+ */
 router.get('/', authController.canSeeUserList);
 router.get('/', userController.list);
 

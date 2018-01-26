@@ -93,6 +93,17 @@ body {
   display: block;
 }
 
+.tag {
+  margin-right: 5px;
+}
+.tag a {
+  color: #fff !important;
+}
+
+.margin-top {
+  margin-top: 24px;
+}
+
 /*!
  * Start Bootstrap - Blog Post (https://startbootstrap.com/template-overviews/blog-post)
  * Copyright 2013-2017 Start Bootstrap

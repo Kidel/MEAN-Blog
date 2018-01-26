@@ -28,7 +28,7 @@ module.exports = {
         var email = req.body.email;
         var password = req.body.password;
         if(email != null && password != null) {
-            userModel.findOne({email: email}, function(err, response){
+            userModel.findOne({email: email}).select('+password +salt').exec(function(err, response){
                 if(err || !response) return res.status(403).json({message: {logged: false, user: null}, err: "Invalid email"});
                 if(sha256(response.salt + password) == response.password) {
                     req.session.user = {

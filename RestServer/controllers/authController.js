@@ -22,7 +22,7 @@ module.exports = {
                 return next();
             });
         }
-        else return res.status(403).json({err: "Not logged in"});
+        else return next(); // not logged users can register
     },
 
     /**

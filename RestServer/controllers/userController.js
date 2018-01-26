@@ -8,6 +8,40 @@ const sha256 = require('sha256');
  * @description :: Server-side logic for managing users.
  */
 module.exports = {
+
+    /**
+     * userController.list()
+     */
+    startup: function (req, res) {
+        userModel.find(function (err, users) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting user.',
+                    error: err
+                });
+            }
+            if(users.length == 0) {
+                var salt = util.getRandomArbitrary(1, 10000000000000000);
+                var user = new userModel({
+                    name : "Admin",
+                    email : "admin@meanblog.fakemail.com",
+                    salt : salt,
+                    password : sha256("" + salt + "admin"),
+                    authority : 255
+                });
+
+                user.save(function (err, user) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when creating user',
+                            error: err
+                        });
+                    }
+                    return res.status(201).json(user);
+                });
+            }
+        });
+    },
     
     /**
      * userController.list()
@@ -16,7 +50,7 @@ module.exports = {
         userModel.find(function (err, users) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting user.',
+                    message: 'Error when getting user list.',
                     error: err
                 });
             }
@@ -76,11 +110,11 @@ module.exports = {
             email : req.body.email,
             salt : salt,
             password : sha256("" + salt + req.body.password),
-			authority : req.body.authority
-
+			authority : 1
         });
-
+        console.log(user);
         user.save(function (err, user) {
+            console.log(err, user);
             if (err) {
                 return res.status(500).json({
                     message: 'Error when creating user',
@@ -99,7 +133,7 @@ module.exports = {
         userModel.findOne({_id: id}, function (err, user) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting user',
+                    message: 'Error when getting user.',
                     error: err
                 });
             }
@@ -112,7 +146,6 @@ module.exports = {
             user.name = req.body.name ? req.body.name : user.name;
             user.email = req.body.email ? req.body.email : user.email;
             user.password = req.body.password ? sha256("" + user.salt + req.body.password) : user.password;
-			user.authority = req.body.authority ? req.body.authority : user.authority;
 			user.edited = Date.now();
 			
             user.save(function (err, user) {
@@ -122,7 +155,6 @@ module.exports = {
                         error: err
                     });
                 }
-
                 return res.json(user);
             });
         });

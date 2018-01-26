@@ -8,6 +8,7 @@ import { Globals } from '../globals';
 @Injectable()
 export class RestItemService {
 
+  serviceName:string="any";
   baseUrl:string = "";
   dataList:any = [];
   dataItem:any = {};
@@ -41,17 +42,24 @@ export class RestItemService {
     this.postItem(this.dataSendItem);
   }
 
+  dataListHandler = data => { this.dataList = data; this.error = "" };
+  dataListErrorHandler = err => { this.dataList = []; this.error = err.error.err || err.error.message; };
+
+  dataItemHandler = data => { this.dataItem = data; this.error = "" };
+  dataItemPostedHandler = data => { this.dataItem = data; this.error = ""; this.dataList.unshift(this.dataItem); this.globals.newSubmission.emit(this.serviceName); };
+  dataItemErrorHandler = err => { this.dataItem = {}; this.error = err.error.err || err.error.message; };
+
   getItemList(page:string) {
     this.httpCallService.get(this.globals.apiUrl + this.baseUrl + page, 
-      data => { this.dataList = data; this.error = "" },
-      err => { this.dataList = []; this.error = err.error.err; }
+      this.dataListHandler,
+      this.dataListErrorHandler
     ); 
   }
 
   getItemFrom(subpath:string, what:string) {
     this.httpCallService.get(this.globals.apiUrl + this.baseUrl + subpath + what, 
       data => { this.dataItem = data; this.error = "" },
-      err => { this.dataItem = {}; this.error = err.error.err; }
+      err => { this.dataItem = {}; this.error = err.error.err || err.error.message; }
     ); 
   }
 
@@ -61,28 +69,30 @@ export class RestItemService {
 
   postItem(formData:any) {
     this.httpCallService.post(this.globals.apiUrl + this.baseUrl, formData,
-      data => { this.dataItem = data; this.error = ""; this.dataList.unshift(this.dataItem); },
-      err => { this.dataItem = {}; this.error = err.error.err; }
+      this.dataItemPostedHandler,
+      this.dataItemErrorHandler
     ); 
   }
 
   editItem(id:string, formData:string) {
     this.httpCallService.put(this.globals.apiUrl + this.baseUrl + id, formData,
-      data => { this.dataItem = data; this.error = "" },
-      err => { this.dataItem = {}; this.error = err.error.err; }
+      this.dataItemHandler,
+      this.dataItemErrorHandler
     ); 
   }
 
   deleteItem(id:string) {
     this.httpCallService.delete(this.globals.apiUrl + this.baseUrl + id, 
-      data => { this.dataItem = data; this.error = "" },
-      err => { this.dataItem = {}; this.error = err.error.err; }
+      this.dataItemHandler,
+      this.dataItemErrorHandler
     ); 
   }
 
-  hash(str:string) {
-    let md5 = new Md5();
-    md5.appendStr(str);
-    return md5.end().toString();
+  gravatarUrl(str:string) {
+    if(str) {
+      let md5 = new Md5();
+      md5.appendStr(str);
+      return md5.end().toString();
+    }
   }
 }

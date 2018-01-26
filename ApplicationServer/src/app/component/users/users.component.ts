@@ -9,6 +9,7 @@ import { RestItemService } from '../../common/rest-item.service';
 export class UsersComponent extends RestItemService implements OnInit {
 
   ngOnInit() {
+    this.serviceName = "UsersComponent";
     this.baseUrl = "users/";
     this.resetList("");
   }

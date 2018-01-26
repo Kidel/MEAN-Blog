@@ -1,31 +1,51 @@
-<p>
-  user: {{ dataItem | json }}
-</p>
-
-{{ error }}
-
-<div>
-  <form>
-    <div>
+<div *ngIf="!globals.logged && (dataItem | json) == '{}';else userData">
+  <h1 class="mt-4">Registration</h1>
+  <hr>
+  <form (submit)="submit()" ngNativeValidate>
+    <div class="form-group">
       <label for="name">Name: </label>
-      <input type="text" [(ngModel)]="dataSendItem.name" name="name" required>
+      <input type="text"class="form-control" [(ngModel)]="dataSendItem.name" name="name" required>
     </div>
-    <div>
+    <div class="form-group">
       <label for="email">Email: </label>
-      <input type="email" [(ngModel)]="dataSendItem.email" name="email" required>
+      <input type="email" class="form-control" [(ngModel)]="dataSendItem.email" name="email" required>
     </div>
-    <div>
+    <div class="form-group">
       <label for="password">Password: </label>
-      <input type="password" [(ngModel)]="dataSendItem.password" name="password" required>
+      <input type="password" class="form-control" [(ngModel)]="dataSendItem.password" name="password" required>
     </div>
-    <div>
-      <label for="authority">Authority: </label>
-      <input type="text" [(ngModel)]="dataSendItem.authority" name="authority" required>
+    <div class="form-group">
+      <input type="submit" value="Sign Up" class="btn btn-primary"> 
     </div>
-    <div>
-      <button (click)="submit()">Submit</button>
-    </div>
+    <div [class.show-feedback]="error" class="invalid-feedback">{{ error }}</div>
   </form>
 </div>
-{{ dataSendItem | json }}
-{{ dataItem | json }}
+
+<ng-template #userData>
+  <div *ngIf="(!error && userId!=null) || (dataItem | json) != '{}'; else registrationError">
+    <div class="media mb-4">
+        <img src="//www.gravatar.com/avatar/{{ gravatarUrl(dataItem.email) }}?s=160&amp;d=retro" class="d-flex mr-3 rounded-circle margin-top">
+      <div class="media-body">
+        <!-- Name -->
+        <h1 class="mt-4">{{ dataItem.name }}</h1>
+        <!-- Mail -->
+        <p class="lead">
+          <a href="mailto: {{ dataItem.email }}">{{ dataItem.email }}</a>
+        </p>
+        <!-- Authority -->
+        <p>
+          Authority: {{ dataItem.authority }}
+          <br>
+        <!-- Date/Time -->
+        Created on {{ dataItem.created | date:'full' }} <span *ngIf="dataItem.edited">Last edit on {{ dataItem.edited | date:'full' }}</span>
+      </p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #registrationError>
+    <div class="alert alert-danger margin-top" role="alert">
+        You can't register a new user while logged in. {{ error }}
+    </div>
+</ng-template>
