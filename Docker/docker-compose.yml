@@ -7,7 +7,7 @@ services:
     depends_on: 
     - database
     environment:
-    - MONGO_URL=mongodb://database:27017/
+    - MONGO_URL=mongodb://database_1:27017/
     ports:
     - "3000:3000"
   application:

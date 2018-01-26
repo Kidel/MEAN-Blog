@@ -17,6 +17,7 @@ RUN $(npm bin)/ng build --prod --build-optimizer
 
 # Env variables
 ENV PORT 8080
+ENV REST_URL localhost
 
 EXPOSE 8080
 CMD [ "npm", "start" ]

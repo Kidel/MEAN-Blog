@@ -20,8 +20,16 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/';
 console.log('Connecting to database at ' + mongoUrl);
-// TODO remember to specify username and password in your configuration
-mongoose.connect(mongoUrl+'RestBlog', { useMongoClient: true }); 
+
+// Database be protected with username and password from config file if used for production
+mongoose.connect(mongoUrl+'RestBlog', { useMongoClient: true }, function(err, db) {
+  if (err) {
+      console.log('Unable to connect to Database. Err: ', err);
+      process.exit(1);
+  } else {
+      console.log('Connected to Database successfully!');
+  }
+});
 
 var app = express();
 
@@ -36,7 +44,8 @@ app.use(session({
       db: 'sessions', 
       ttl: 60 * 60 * 24 * 365,
       touchAfter: 60 * 60 * 24,
-      mongooseConnection: mongoose.connection
+      mongooseConnection: mongoose.connection,
+      "auto_reconnect": true
     }),
     cookie: { 
       secure: false, // false or it needs HTTPS
