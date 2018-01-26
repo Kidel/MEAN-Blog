@@ -3,11 +3,11 @@ const path = require('path');
 const http = require('http');
 const fs = require('fs');
 
-fs.writeFile(path.join(__dirname, 'dist/assets/config.json'), '{ "restServerUrl": "http://' + (process.env.REST_URL || 'localhost') + ':3000/" }', function(err) {
+fs.writeFile(path.join(__dirname, 'dist/assets/config.json'), '{ "restServerUrl": "' + (process.env.REST_URL || 'http://localhost:3000/') + '" }', function(err) {
     if(err) {
         return console.log(err);
     }
-    console.log('Saved url "http://' + (process.env.REST_URL || 'localhost') + ':3000/" as restServerUrl in assets/config.json');
+    console.log('Saved url "' + (process.env.REST_URL || 'http://localhost:3000/') + '" as restServerUrl in assets/config.json');
 }); 
 
 const app = express();
