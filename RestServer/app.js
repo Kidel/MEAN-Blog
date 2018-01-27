@@ -54,14 +54,9 @@ app.use(session({
 }));
 
 // CORS whitelist
-var originsWhitelist = [
-  'http://localhost:4200', //this is my front-end url for development
-  'http://localhost:8080', //this is my front-end url for development (from docker)
-  'http://www.myproductionurl.com'
-];
 var corsOptions = {
   origin: function(origin, callback){
-        var isWhitelisted = originsWhitelist.indexOf(origin) !== -1;
+        var isWhitelisted = (config.originsWhitelist.indexOf(origin) !== -1 || origin == process.env.APPSERVER_URL);
         callback(null, isWhitelisted);
   },
   credentials:true

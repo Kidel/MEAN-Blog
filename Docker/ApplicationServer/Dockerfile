@@ -16,9 +16,9 @@ RUN npm install --unsafe-perm
 RUN $(npm bin)/ng build --prod --build-optimizer
 
 # Env variables
-ENV PORT 8080
+ENV PORT 8888
 ENV REST_URL localhost
 
-EXPOSE 8080
+EXPOSE 8888
 CMD [ "npm", "start" ]
 
