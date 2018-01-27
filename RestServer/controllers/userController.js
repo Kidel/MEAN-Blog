@@ -112,9 +112,9 @@ module.exports = {
             password : sha256("" + salt + req.body.password),
 			authority : 1
         });
-        console.log(user);
+        //console.log(user);
         user.save(function (err, user) {
-            console.log(err, user);
+            //console.log(err, user);
             if (err) {
                 return res.status(500).json({
                     message: 'Error when creating user',

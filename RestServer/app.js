@@ -23,7 +23,11 @@ var dbConnect = require("./dbConnector");
 // Database be protected with username and password from config file if used for production
 var mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/';
 console.log('Connecting to database at ' + mongoUrl);
-mongoose.connection = dbConnect(mongoUrl+'RestBlog', { useMongoClient: true });
+const db = dbConnect(mongoUrl+'RestBlog', { useMongoClient: true });
+
+db.once('open', function () {
+  mongoose.connect(mongoUrl+'RestBlog', { useMongoClient: true });
+});
 
 // Creating app
 var app = express();
