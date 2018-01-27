@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session)
 
@@ -15,26 +17,20 @@ var posts = require('./routes/postRoutes');
 var login = require('./routes/loginRoutes');
 
 var config = require("./config");
+var dbConnect = require("./dbConnector");
 
-var mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
-var mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/';
-console.log('Connecting to database at ' + mongoUrl);
 
 // Database be protected with username and password from config file if used for production
-mongoose.connect(mongoUrl+'RestBlog', { useMongoClient: true }, function(err, db) {
-  if (err) {
-      console.log('Unable to connect to Database. Err: ', err);
-      process.exit(1);
-  } else {
-      console.log('Connected to Database successfully!');
-  }
-});
+var mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/';
+console.log('Connecting to database at ' + mongoUrl);
+mongoose.connection = dbConnect(mongoUrl+'RestBlog', { useMongoClient: true });
 
+// Creating app
 var app = express();
 
 app.set('trust proxy', 1); // trust first proxy
 
+// Cookies and session
 app.use(cookieParser());
 app.use(session({
     secret: config.cookieSecret,
@@ -53,6 +49,7 @@ app.use(session({
      } 
 }));
 
+// CORS whitelist
 var originsWhitelist = [
   'http://localhost:4200', //this is my front-end url for development
   'http://localhost:8080', //this is my front-end url for development (from docker)

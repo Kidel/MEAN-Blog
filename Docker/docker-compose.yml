@@ -8,6 +8,7 @@ services:
     - database
     environment:
     - MONGO_URL=mongodb://database_1:27017/
+    - NODE_ENV=production
     ports:
     - "3000:3000"
   application:
